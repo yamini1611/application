@@ -1,0 +1,22 @@
+#navbar{
+    word-break: 15px;
+    padding-left: 320px;
+    background-color: #eee;
+    color: #393f81;
+}
+
+
+li{
+    padding-left: 50px;
+  
+}
+
+.nav-link{
+    color: rgb(255, 255, 255);
+}
+
+#fo{
+    padding-left:-5px;
+    padding-right: 15px;
+  
+}

@@ -1,0 +1,12 @@
+{
+  "login": [
+    {
+      "name": "yamini",
+      "email": "yamini@gmail.com",
+      "password": "yamini",
+      "repeatPassword": "yamini",
+      "id": 1
+    }
+  ],
+  "checkAuth": []
+}
