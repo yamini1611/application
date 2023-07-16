@@ -6,7 +6,104 @@
       "password": "yamini",
       "repeatPassword": "yamini",
       "id": 1
+    },
+    {
+      "email": "admin@gmail.com",
+      "password": "admin",
+      "id": 2
     }
   ],
-  "checkAuth": []
+  "checkAuth": [],
+  "groceries": [
+    {
+      "id": 1,
+      "name": "Rice",
+      "price": 60,
+      "image": "https://wallpaperaccess.com/full/1463523.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Wheat Flour",
+      "price": 40,
+      "image": "https://img1.21food.com/img/cj/2014/10/8/1412770530661963.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Milk",
+      "price": 50,
+      "image": "https://www.vhv.rs/dpng/d/9-98222_milk-packet-hd-png-download.png"
+    },
+    {
+      "id": 4,
+      "name": "Eggs",
+      "price": 6,
+      "image": "http://a.rgbimg.com/cache1v9b1x/users/c/co/coolhewitt23/600/oeo1NWc.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Tomatoes",
+      "price": 125,
+      "image": "https://tse4.mm.bing.net/th?id=OIP.Cdmw7bkNH9RU6bvBDE0IJQHaEo&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 6,
+      "name": "Potatoes",
+      "price": 30,
+      "image": "https://tse4.mm.bing.net/th?id=OIP.BAsXj54cd1KlO501YgE6eAHaEK&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 7,
+      "name": "Bananas",
+      "price": 20,
+      "image": "https://tse1.mm.bing.net/th?id=OIP.fc1RtPhvfGPWptN0Lx6oogHaEK&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 8,
+      "name": "Apples",
+      "price": 40,
+      "image": "https://tse3.mm.bing.net/th?id=OIP.IRiasXs0B5_Ym4pzWkqUWgHaEo&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 9,
+      "name": "Oranges",
+      "price": 35,
+      "image": "https://wallpapercave.com/wp/wp2293595.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Cucumbers",
+      "price": 15,
+      "image": "https://tse1.mm.bing.net/th?id=OIP.ujQinC2OHoKRh_MecZABtAHaEK&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 11,
+      "name": "Carrots",
+      "price": 20,
+      "image": "https://www.theayurveda.org/wp-content/uploads/2015/09/Carrot-fruits.jpg"
+    },
+    {
+      "id": 12,
+      "name": "Onions",
+      "price": 18,
+      "image": "https://tse1.mm.bing.net/th?id=OIP.i4ICcycwhtoUcpNFCWWWGwHaFY&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 13,
+      "name": "Chicken",
+      "price": 120,
+      "image": "https://tse2.mm.bing.net/th?id=OIP.vpF961HZWIwVSLaDKk5ZIgHaEo&pid=Api&P=0&h=180"
+    },
+    {
+      "id": 14,
+      "name": "Pasta",
+      "price": 180,
+      "image": "https://wallpapercave.com/wp/wp3030126.jpg"
+    },
+    {
+      "id": 15,
+      "name": "Fish",
+      "price": 90,
+      "image": "https://tse2.mm.bing.net/th?id=OIP.vU-gyn4X79HyaPvsb8TUVgHaE8&pid=Api&P=0&h=180"
+    }
+  ]
 }

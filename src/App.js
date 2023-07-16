@@ -1,46 +1,29 @@
-import React, { useState, useEffect } from 'react';
+// App.js
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Signup from './components/signup/signup';
-import Login from './components/login/login';
-import Dashboard from './components/Authentication/dashboard';
-import UserProvider from './components/Context/Context';
+import UserProvider from './components/Authentication/Context';
 import Navbar from './components/navbar/navbar';
+import Login from './components/Authentication/login/login';
+import Dashboard from './components/Dashboard/dashboard';
+import Admin from './components/Admin Access/Admin';
+import Home from './components/homepage/homepage'; // Import your Home component here
+import Signup from './components/Authentication/signup/signup';
 
 const App = () => {
-  const [loginData, setLoginData] = useState(null); // Initialize loginData as null
-
-  useEffect(() => {
-    // Fetch user data from JSON file
-    fetch('http://localhost:4000/login')
-      .then((response) => response.json())
-      .then((data) => setLoginData(data));
-  }, []);
-
-  const handleLogin = (userData) => {
-    // Update the user data in loginData state
-    setLoginData((prevData) => ({
-      ...prevData,
-      login: [...prevData.login, userData],
-    }));
-  };
-
   return (
-    <Router>
-      <UserProvider>
+    <UserProvider>
+      <Router>
         <Navbar />
         <Routes>
-          <Route
-            path="/signup"
-            element={<Signup handleLogin={handleLogin} />}
-          />
-          <Route
-            path="/login"
-            element={<Login loginData={loginData} handleLogin={handleLogin} />}
-          />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+         <Route  path="/dashboard" element={<Dashboard />}></Route>
+         <Route  path="/Admin" element={<Admin />}></Route>
+          {/* Use the regular Route component for /Home */}
+          <Route path="/Home" element={<Home />} />
         </Routes>
-      </UserProvider>
-    </Router>
+      </Router>
+    </UserProvider>
   );
 };
 

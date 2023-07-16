@@ -1,52 +1,53 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { UserContext } from '../Context/Context';
+import { Link, Navigate } from 'react-router-dom';
+import { UserContext } from '../Authentication/Context';
 
 const Navbar = () => {
-  const { user, logout } = useContext(UserContext);
+  const { user, handleLogout } = useContext(UserContext);
+
+  const handleLogoutClick = () => {
+    handleLogout();
+    // Redirect to login page after logout
+    return <Navigate to="/login" />;
+  };
+
+  // Check if the user is an admin
+  const isAdmin = user.email === 'admin@gmail.com' && user.password === 'admin';
 
   return (
-    <nav className="navbar navbar-expand-lg navbar bg-dark" id='navbar'>
+    <nav className="navbar navbar-expand-lg navbar bg-dark" id='navbar' style={{fontSize:25 , color:"white"}}>
       <div className="container-fluid">
-
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link " to="/Home">Home<i className="fa fa-fw fa-home"></i></Link>
+              <Link className="nav-link" to="/Home">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/Admin">PHP</Link>
-            </li>
-            <li className="nav-item dropdown">
-              <Link className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                React
-              </Link>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" href="#">Authentication</Link></li>
-                <li><Link className="dropdown-item" href="#">Authorization</Link></li>
-                <li><Link className="dropdown-item" href="#">Functionality</Link></li>
-              </ul>
-            </li>
+            {/* Show the "Admin Access" link only if the user is logged in as an admin */}
+            {isAdmin && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/Admin">Admin Access</Link>
+              </li>
+            )}
 
             {user.loggedIn ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/dashboard" >Dashboard</Link>
+                  <Link className="nav-link" to="/dashboard">GROCERIES</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/" onClick={logout}>Logout</Link>
+                  <Link className="nav-link" to="/login" onClick={handleLogoutClick}>Logout</Link>
                 </li>
               </>
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login" >Login<i className="fa fa-fw fa-user"></i></Link>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/signup" >SignUp</Link>
+                  <Link className="nav-link" to="/signup">SignUp</Link>
                 </li>
               </>
             )}
