@@ -1,12 +1,12 @@
 
-.col{
+#col{
     margin-top: 30px;
     overflow-x: hidden;
     padding-bottom: 30px;
     color: rgb(94, 29, 155);
 }
 
-.row{
+#row{
     padding: 10px;
     border: solid;
    margin-left: 50px;

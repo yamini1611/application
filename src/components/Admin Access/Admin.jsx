@@ -11,7 +11,7 @@ const Admin = () => {
     price: 1,
     image: '',
   });
-  const [editProduct, setEditProduct] = useState(null); // Store the product to be edited here
+  const [editProduct, setEditProduct] = useState(null);
 
   useEffect(() => {
     fetchGroceries();
@@ -26,11 +26,7 @@ const Admin = () => {
     }
   };
 
-  const handleBuyNow = async (id) => {
-    // Implement your buy now logic here
-    // This is just a placeholder
-    console.log('Order Placed Successfully!');
-  };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,9 +40,7 @@ const Admin = () => {
     e.preventDefault();
     try {
       if (editProduct) {
-        // Send a PUT request to the API with the updated product data
         await axios.put(`http://localhost:4000/groceries/${editProduct.id}`, newProduct);
-        // Show a success message for edit
         Swal.fire({
           icon: 'success',
           title: 'Product updated successfully!',
@@ -54,9 +48,7 @@ const Admin = () => {
           timer: 1500,
         });
       } else {
-        // Send a POST request to the API with the new product data
         await axios.post('http://localhost:4000/groceries', newProduct);
-        // Show a success message for create
         Swal.fire({
           icon: 'success',
           title: 'Product created successfully!',
@@ -65,19 +57,15 @@ const Admin = () => {
         });
       }
 
-      // Fetch the updated list of groceries after successful creation/edit
       await fetchGroceries();
-      // Clear the form fields
       setNewProduct({
         name: '',
         price: 1,
         image: '',
       });
-      // Hide the form after successful creation/edit
       setShowForm(false);
     } catch (error) {
       console.error('Error creating/updating product:', error);
-      // Show an error message or handle errors as per your requirement
       Swal.fire({
         icon: 'error',
         title: 'Failed to create/update product',
@@ -88,13 +76,12 @@ const Admin = () => {
 
   const handleAddProduct = () => {
     setShowForm(true);
-    setEditProduct(null); // Reset editProduct when adding a new product
+    setEditProduct(null); 
   };
 
   const handleEditProduct = (product) => {
     setShowForm(true);
     setEditProduct(product);
-    // Set the form fields to the product data being edited
     setNewProduct({
       name: product.name,
       price: product.price,
@@ -104,11 +91,8 @@ const Admin = () => {
 
   const handleDeleteProduct = async (id) => {
     try {
-      // Send a DELETE request to the API to delete the product
       await axios.delete(`http://localhost:4000/groceries/${id}`);
-      // Fetch the updated list of groceries after successful deletion
       await fetchGroceries();
-      // Show a success message for deletion
       Swal.fire({
         icon: 'success',
         title: 'Product deleted successfully!',
@@ -117,7 +101,6 @@ const Admin = () => {
       });
     } catch (error) {
       console.error('Error deleting product:', error);
-      // Show an error message or handle errors as per your requirement
       Swal.fire({
         icon: 'error',
         title: 'Failed to delete product',
@@ -173,7 +156,7 @@ const Admin = () => {
             <img src={item.image} alt={item.name} />
             <h3>{item.name}</h3>
             <p>Price: ₹ {item.price} </p>
-            <div ><button className="btn btn-success" id="bn" onClick={() => handleBuyNow(item.id)}>Buy Now</button>
+            <div >
               <button className="btn btn-warning" id="edit" onClick={() => handleEditProduct(item)}>Edit</button>
               <button className="btn btn-danger" id="delete" onClick={() => handleDeleteProduct(item.id)}>Delete</button></div>
 

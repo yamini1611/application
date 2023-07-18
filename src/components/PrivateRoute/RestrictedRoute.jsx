@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import { UserContext } from '../Authentication/Context';
-import ProtectedPage from '../homepage/homepage'; // Import the ProtectedPage component
+import ProtectedPage from '../homepage/homepage'; 
 
 const RestrictedRoute = ({ element, ...rest }) => {
   const { user } = useContext(UserContext);
 
-  // If the user is logged in, allow access to the element (page)
-  // Otherwise, redirect to the login page
+
   return user.loggedIn ? (
     <>
-      <ProtectedPage name={user.name} /> {/* Display the welcome message */}
+      <ProtectedPage name={user.name} />
       <Route {...rest} element={element} />
     </>
   ) : (

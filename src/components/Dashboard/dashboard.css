@@ -58,3 +58,29 @@ h2{
   font-size: 55px;
   color: rgb(71, 11, 79);
 }
+
+td:hover{
+  background-color: rgb(234, 173, 170);
+}
+thead{
+  background-color: rgb(5, 16, 26);
+  color: #fff;
+  font-size: 25px;
+}
+
+#hj{
+  padding: 50px 50px 0px 0px;
+}
+
+tr:nth-child(even){
+  background-color: rgb(194, 219, 234);
+  font-size: 20px;
+  color: rgb(123, 8, 118);
+}
+
+tr:nth-child(odd){
+  background-color: rgb(225, 179, 237);
+font-size: 20px;
+color: rgb(123, 8, 118);
+}
+

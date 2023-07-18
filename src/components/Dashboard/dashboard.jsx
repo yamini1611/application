@@ -24,7 +24,6 @@ const Dashboard = () => {
   };
 
   const handleBuyNow = async (id) => {
-    // Reset the progress to 0 when "Buy Now" is clicked
     setGroceries((prevGroceries) =>
       prevGroceries.map((item) => (item.id === id ? { ...item, progress: 0 } : item))
     );
@@ -38,9 +37,7 @@ const Dashboard = () => {
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-        // Simulate a delay for processing the order
         setTimeout(() => {
-          // Update the progress to 50% when SweetAlert is opened
           setGroceries((prevGroceries) =>
             prevGroceries.map((item) => (item.id === id ? { ...item, progress: 50 } : item))
           );
@@ -57,7 +54,6 @@ const Dashboard = () => {
       setGroceries((prevGroceries) =>
         prevGroceries.map((item) => (item.id === id ? { ...item, progress: 100 } : item))
       );
-      // Show the success message with SweetAlert
       Swal.fire({
         icon: 'success',
         title: 'Order Placed Successfully!',
@@ -114,13 +110,13 @@ const Dashboard = () => {
             <option value="none">None</option>
             <option value="5">Above ₹5</option>
             <option value="10">Above ₹10</option>
-            <option value="50">Above ₹50</option>
+            <option value="100">Above ₹100</option>
           </select>
         </label>
         <h3 style={{marginLeft:50}}>Search</h3>
+        
       {/* Search Input */}
 
-       
         <input
         
           type="text"

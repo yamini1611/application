@@ -23,6 +23,7 @@ const UserProvider = ({ children }) => {
           loggedIn: true,
           email,
           password,
+          
         });
       } else {
         setUser({

@@ -64,3 +64,20 @@
   background-color: rgb(196, 199, 20);
 }
 
+#admintask{
+  border:ridge;
+  margin: 100px 200px 30px 30px;
+  padding: 100px 100px 100px 100px ;
+}
+.card{
+  padding: 45px;
+}
+
+
+
+.card:nth-child(even){
+  background-color: rgba(166, 182, 237, 0.53);
+}
+.card:nth-child(odd){
+  background-color: rgba(174, 206, 228, 0.521);
+}

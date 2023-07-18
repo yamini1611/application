@@ -2,3 +2,7 @@
     background-color: rgb(169, 170, 155);
     
 }
+
+#vt{
+    visibility: hidden;
+}

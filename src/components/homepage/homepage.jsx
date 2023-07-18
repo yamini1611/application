@@ -6,12 +6,12 @@ const ProtectedPage = ({ name }) => {
     <div>
       <p ></p>
         <h2 id='h2'>AMUTHA STORES</h2>
-        <div className="row">
-<div className="col">
+        <div className="row" id="row">
+<div className="col" id="col">
 <img src="https://www.iga.com/hubfs/great-grocery-store.jpg#keepProtocol" alt="" id='img' height={400} width={600}></img>
 
 </div>
-<div className="col">
+<div className="col"  id="col"> 
 <h2>About Us</h2>
       <p>Welcome to our grocery store! We are dedicated to providing high-quality groceries and excellent customer service. Our goal is to make your shopping experience convenient and enjoyable.</p>
       <p>At our store, you'll find a wide selection of fresh produce, pantry staples, dairy products, meats, and more. We source our products from trusted suppliers to ensure their quality and freshness.</p>
