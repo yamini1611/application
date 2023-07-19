@@ -1,11 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const port = 4000;
 
-// Dummy user data for demonstration
 const users = {
   'user1@example.com': { email: 'user1@example.com', password: 'password1', id: 1 },
   'user2@example.com': { email: 'user2@example.com', password: 'password2', id: 2 },
@@ -14,20 +16,18 @@ const users = {
 app.use(bodyParser.json());
 app.use(
   session({
-    secret: 'your-secret-key', // Replace this with a strong secret key
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Set to true in a production environment with HTTPS
+    cookie: { secure: false },
   })
 );
 
-// Endpoint for user login
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   const user = users[email];
 
   if (user && user.password === password) {
-    // Store user data in the session
     req.session.user = user;
     res.json({ message: 'Login successful' });
   } else {
@@ -35,7 +35,6 @@ app.post('/login', (req, res) => {
   }
 });
 
-// Endpoint to check if the user is authenticated
 app.get('/checkAuth', (req, res) => {
   if (req.session.user) {
     res.json({ authenticated: true, user: req.session.user });
@@ -44,41 +43,89 @@ app.get('/checkAuth', (req, res) => {
   }
 });
 
-// Logout endpoint
 app.post('/logout', (req, res) => {
-  // Destroy the session to log the user out
   req.session.destroy();
   res.json({ message: 'Logout successful' });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+const tasksFilePath = path.join(__dirname, 'tasks.json');
 
-// Assuming you have an express app set up and the tasks data is stored in some variable or database
+const readTasksFromFile = () => {
+  try {
+    const data = fs.readFileSync(tasksFilePath);
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading tasks from file: ', error);
+    return [];
+  }
+};
+
+const saveTasksToFile = (tasks) => {
+  try {
+    fs.writeFileSync(tasksFilePath, JSON.stringify(tasks, null, 2));
+  } catch (error) {
+    console.error('Error saving tasks to file: ', error);
+  }
+};
+
 app.get('/tasks', (req, res) => {
-  const batch = req.query.batch; // Get the batch from the query parameter
-
-  // Filter the tasks based on the batch
-  const filteredTasks = tasks.filter((task) => task.Batch === batch);
-
-  res.json(filteredTasks); // Send the filtered tasks as the response
+  const tasks = readTasksFromFile();
+  const batch = req.query.batch;
+  const filteredTasks = batch ? tasks.filter((task) => task.Batch === batch) : tasks;
+  res.json(filteredTasks);
 });
-// Assuming you have an existing route for updating a task by ID
-app.put('/tasks/:id', (req, res) => {
-  const taskId = req.params.id;
-  const { status } = req.body;
 
-  // Find the task by ID in your tasks array or database
-  const taskToUpdate = tasks.find((task) => task.id === parseInt(taskId));
+app.put('/tasks', async (req, res) => {
+  const updatedTasks = req.body;
 
-  if (!taskToUpdate) {
-    return res.status(404).json({ message: 'Task not found' });
+  try {
+    const tasks = readTasksFromFile();
+
+    for (const updatedTask of updatedTasks) {
+      const taskId = updatedTask.id;
+      const taskToUpdate = tasks.find((task) => task.id === parseInt(taskId));
+
+      if (!taskToUpdate) {
+        return res.status(404).json({ message: 'Task not found' });
+      }
+
+      for (const key in updatedTask) {
+        taskToUpdate[key] = updatedTask[key];
+      }
+
+      // Retrieve the user's name from the /login endpoint
+      const userResponse = await axios.get('http://localhost:4000/login');
+      const userData = userResponse.data;
+      const user = userData.find((userItem) => userItem.email === req.session.user.email);
+
+      if (user) {
+        taskToUpdate.completedBy = user.name;
+      }
+    }
+
+    saveTasksToFile(tasks);
+
+    return res.status(200).json(updatedTasks);
+  } catch (error) {
+    console.error('Error updating tasks: ', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/TasksCompleted', (req, res) => {
+  const { status, completedBy, Batch, TaskTopic } = req.body;
+
+  if (!status || !completedBy || !Batch || !TaskTopic) {
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Update the status of the task
-  taskToUpdate.status = status;
+  // Process the data or save it to the database
+  // For this example, we'll just log the received data
+  console.log('Received Completed Task:', req.body);
 
-  // Return the updated task
-  return res.status(200).json(taskToUpdate);
+  return res.status(200).json({ message: 'Completed Task Received' });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });

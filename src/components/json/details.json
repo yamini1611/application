@@ -116,36 +116,14 @@
   ],
   "tasks": [
     {
-      "status": "Completed",
-      "TaskTopic": "React form ",
-      "Description": "React form  validation",
-      "DueDate": "2023-07-20",
-      "Batch": "2020-2023",
-      "id": 1
-    },
-    {
-      "status": "Completed",
-      "TaskTopic": "PHP SQL connection",
-      "Description": "PHP SQL establish connection",
-      "DueDate": "2023-07-19",
-      "Batch": "2021-2024",
-      "id": 2
-    },
-    {
-      "status": "Completed",
-      "TaskTopic": "React Application",
-      "Description": "React Applicationusing all concepts",
+      "TaskTopic": "dsfdsfd",
+      "Description": "dsf",
       "DueDate": "2023-07-21",
-      "Batch": "2022-2025",
-      "id": 3
-    },
-    {
-      "status": "Completed",
-      "TaskTopic": "React with PHP",
-      "Description": "Create a web application with React and PHP",
-      "DueDate": "2023-07-20",
       "Batch": "2020-2023",
-      "id": 4
+      "status": "completed",
+      "id": 1,
+      "completedBy": "Yamini"
     }
-  ]
+  ],
+  "TasksCompleted": []
 }

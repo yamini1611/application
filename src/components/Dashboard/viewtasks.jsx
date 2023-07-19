@@ -9,77 +9,58 @@ const Viewtasks = () => {
   const [userBatch, setUserBatch] = useState('');
   const [updatedTasks, setUpdatedTasks] = useState({});
   const [userTasks, setUserTasks] = useState([]);
+  const [completedBy, setCompletedBy] = useState({}); // Store completedBy names
 
   const fetchData = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:4000/tasks');
       setTasks(response.data);
-
+  
       const loginResponse = await axios.get('http://localhost:4000/login');
       const userData = loginResponse.data;
-
+  
       const loggedInUser = userData.find((userItem) => userItem.email === user.email);
       if (loggedInUser) {
         setUserBatch(loggedInUser.batch);
         const userSpecificTasks = response.data.filter((task) => task.Batch === loggedInUser.batch);
         setUserTasks(userSpecificTasks);
+        setCompletedBy(loggedInUser.name); // Set the name of the logged-in user
       }
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
   }, [user.email]);
+  
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const handleStatusChange = (taskId, e) => {
-    const newStatus = e.target.value;
-    setUpdatedTasks((prevTasks) => ({
-      ...prevTasks,
-      [taskId]: {
-        ...prevTasks[taskId],
-        status: newStatus,
-        TaskTopic: prevTasks[taskId]?.TaskTopic || '',
-        Description: prevTasks[taskId]?.Description || '',
-        DueDate: prevTasks[taskId]?.DueDate || '',
-        Batch: prevTasks[taskId]?.Batch || '',
-      },
-    }));
-  };
+  const handleStatusChange = async (taskId, newStatus) => {
+    const taskToUpdate = tasks.find((task) => task.id === taskId);
+    if (!taskToUpdate) return;
 
-  const updateTasks = async () => {
     try {
-      for (const taskId in updatedTasks) {
-        const updatedTask = updatedTasks[taskId];
-        const taskToUpdate = tasks.find((task) => task.id === taskId);
-        if (!taskToUpdate) continue;
+      await axios.put(`http://localhost:4000/tasks/${taskId}`, {
+        ...taskToUpdate, // Keep the existing fields
+        status: newStatus, // Update the status field
+        completedBy: completedBy, // Add the completedBy field with the name of the logged-in user
+      });
 
-        await axios.put(`http://localhost:4000/tasks/${taskId}`, updatedTask);
-      }
-
+      // Update the tasks in the state with the new status
       setTasks((prevTasks) =>
-        prevTasks.map((task) => ({
-          ...task,
-          status: updatedTasks[task.id]?.status || task.status,
-          TaskTopic: updatedTasks[task.id]?.TaskTopic || task.TaskTopic,
-          Description: updatedTasks[task.id]?.Description || task.Description,
-          DueDate: updatedTasks[task.id]?.DueDate || task.DueDate,
-          Batch: updatedTasks[task.id]?.Batch || task.Batch,
-        }))
+        prevTasks.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
       );
 
-      setUpdatedTasks({});
+      // Update the updatedTasks state to reflect the change
+      setUpdatedTasks((prevUpdatedTasks) => ({
+        ...prevUpdatedTasks,
+        [taskId]: { ...taskToUpdate, status: newStatus },
+      }));
     } catch (error) {
-      console.error('Error updating tasks: ', error);
+      console.error('Error updating task status: ', error);
     }
   };
-
-  useEffect(() => {
-    if (Object.keys(updatedTasks).length > 0) {
-      updateTasks();
-    }
-  }, [updatedTasks]);
 
   return (
     <div>
@@ -97,64 +78,24 @@ const Viewtasks = () => {
                     <th>Due Date</th>
                     <th>Assigned To</th>
                     <th>Status</th>
+                    <th>Completed By</th> {/* New column for Completed By */}
                   </tr>
                 </thead>
                 <tbody>
                   {userTasks.map((task) => (
                     <tr key={task.id}>
-                      <td>
-                        <input
-                          type="text"
-                          value={updatedTasks[task.id]?.TaskTopic || task.TaskTopic}
-                          onChange={(e) =>
-                            setUpdatedTasks((prevTasks) => ({
-                              ...prevTasks,
-                              [task.id]: {
-                                ...prevTasks[task.id],
-                                TaskTopic: e.target.value,
-                              },
-                            }))
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={updatedTasks[task.id]?.Description || task.Description}
-                          onChange={(e) =>
-                            setUpdatedTasks((prevTasks) => ({
-                              ...prevTasks,
-                              [task.id]: {
-                                ...prevTasks[task.id],
-                                Description: e.target.value,
-                              },
-                            }))
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          value={updatedTasks[task.id]?.DueDate || task.DueDate}
-                          onChange={(e) =>
-                            setUpdatedTasks((prevTasks) => ({
-                              ...prevTasks,
-                              [task.id]: {
-                                ...prevTasks[task.id],
-                                DueDate: e.target.value,
-                              },
-                            }))
-                          }
-                        />
-                      </td>
+                      <td>{task.TaskTopic}</td>
+                      <td>{task.Description}</td>
+                      <td>{task.DueDate}</td>
                       <td>{task.Batch}</td>
                       <td>
                         <input
                           type="text"
                           value={updatedTasks[task.id]?.status || task.status}
-                          onChange={(e) => handleStatusChange(task.id, e)}
+                          onChange={(e) => handleStatusChange(task.id, e.target.value)}
                         />
                       </td>
+                      <td>{completedBy}</td>
                     </tr>
                   ))}
                 </tbody>

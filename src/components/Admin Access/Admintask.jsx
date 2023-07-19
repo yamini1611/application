@@ -14,10 +14,11 @@ export default function AdminTask() {
 
   const [AllTasks, SetAllTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchData();
+    fetchLoginData(); 
   }, []);
 
   const fetchData = async () => {
@@ -26,6 +27,20 @@ export default function AdminTask() {
       SetAllTasks(response.data);
     } catch (error) {
       console.error("Error fetching data: ", error);
+    }
+  };
+
+  const fetchLoginData = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/login");
+      const userData = response.data;
+      const completedByMapData = {};
+      userData.forEach((user) => {
+        completedByMapData[user.email] = user.name;
+      });
+      
+    } catch (error) {
+      console.error("Error fetching login data: ", error);
     }
   };
 
@@ -40,7 +55,10 @@ export default function AdminTask() {
   const handlepost = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:4000/tasks", Tasks);
+      await axios.post("http://localhost:4000/tasks", {
+        ...Tasks, // Pass all the task details
+        CompletedBy: Tasks.CompletedBy, // Include the CompletedBy field with the email
+      });
       toast.success("Task created successfully!", { autoClose: 1800, position: "top-center" });
       fetchData();
       closeModal();
@@ -52,7 +70,10 @@ export default function AdminTask() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:4000/tasks/${selectedTaskId}`, Tasks);
+      await axios.put(`http://localhost:4000/tasks/${selectedTaskId}`, {
+        ...Tasks, // Pass all the existing task details
+        CompletedBy: Tasks.CompletedBy, // Include the CompletedBy field with the email
+      });
       toast.success("Task updated successfully!", { autoClose: 1800, position: "top-center" });
       fetchData();
       closeModal();
@@ -79,6 +100,7 @@ export default function AdminTask() {
       DueDate: task.DueDate,
       Batch: task.Batch,
       status: task.status,
+     
     });
   };
 
@@ -90,6 +112,7 @@ export default function AdminTask() {
       DueDate: null,
       Batch: null,
       status: null,
+     
     });
   };
 
@@ -99,54 +122,53 @@ export default function AdminTask() {
       task.Description.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
-
   return (
-    <div id="admintask">  
-    <div className="d-flex">
-    <div className="input-group">
-        <label>SEARCH : </label>
+    <div id="admintask">
+      <div className="d-flex">
+        <div className="input-group">
+          <label>SEARCH : </label>
           <input
-          style={{paddingLeft:6 ,marginLeft:10}}
-          type="text"
-          className=""
-          placeholder="Search by Task Topic"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+            style={{ paddingLeft: 6, marginLeft: 10 }}
+            type="text"
+            className=""
+            placeholder="Search by Task Topic"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>
-    </div>
-      
-      <div className="col-8" style={{display:"flex"}}>
-        <h1 style={{ marginTop:50 ,marginLeft:0}}>ADMIN TASK CREATION</h1>
+
+      <div className="col-8" style={{ display: "flex" }}>
+        <h1 style={{ marginTop: 50, marginLeft: 0 }}>ADMIN TASK CREATION</h1>
         <button
           id="assign"
-          style={{height:40,marginTop:50,marginLeft:50}}
-
+          style={{ height: 40, marginTop: 50, marginLeft: 50 }}
           className="btn btn-dark"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
           ASSIGN TASK
         </button>
-        
       </div>
       <br></br>
-     <div className="row">
+      <div className="row">
         <div>
           <h1 style={{ marginLeft: 50, textAlign: "center" }}>Assigned Tasks</h1>
           <br></br>
           <ul id="border">
             {filteredTasks.map((task) => (
               <h3 key={task.id} className="card mb-4 d-flex">
-                <span>Task Topic : {task.TaskTopic || 'N/A'} </span>
+                <span>Task Topic : {task.TaskTopic || "N/A"} </span>
                 <br></br>
-                <span>Description : {task.Description || 'N/A'} </span>
+                <span>Description : {task.Description || "N/A"} </span>
                 <br></br>
-                <span>Due Date {task.DueDate || 'N/A'} </span>
+                <span>Due Date {task.DueDate || "N/A"} </span>
                 <br></br>
-                <span>Batch : {task.Batch || 'N/A'}</span>
+                <span>Batch : {task.Batch || "N/A"}</span>
                 <br></br>
-                <span>Status : {task.status || 'N/A'}</span>
+                <span>Status : {task.status || "N/A"}</span>
+                <br></br>
+               
                 <div className="d-flex">
                   <button
                     className="btn btn-warning"
@@ -166,7 +188,6 @@ export default function AdminTask() {
           </ul>
         </div>
       </div>
-
       <div
         className="modal fade"
         id="staticBackdrop"
