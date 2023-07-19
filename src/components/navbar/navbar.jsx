@@ -65,9 +65,9 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/login" onClick={handleLogoutClick}>Logout</Link>
                 </li>
-                {userData.length > 0 && ( // Check if userData is available
+                {userData.length > 0 && ( 
                   <li className="nav-item" style={{marginLeft:600}}>
-                    <h3 style={{fontSize:28 , fontFamily:"sans" ,marginTop:0}}><i class="fa-solid fa-user fa-flip" style={{color:"white"}}></i>{userData.find(u => u.email === user.email)?.name}</h3> 
+                    <h3 style={{fontSize:28 , fontFamily:"sans" ,marginTop:0}}><i className="fa-solid fa-user fa-flip" style={{color:"white"}}></i>{userData.find(u => u.email === user.email)?.name}</h3> 
                   </li>
                 )}
               </>

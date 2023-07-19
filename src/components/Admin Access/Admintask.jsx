@@ -5,17 +5,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function AdminTask() {
   const [Tasks, SetTasks] = useState({
-    TaskTopic: "",
-    Description: "",
-    DueDate: "",
-    Batch: "",
-    status: "",
+    TaskTopic: null,
+    Description: null,
+    DueDate: null,
+    Batch: null,
+    status: null,
   });
 
   const [AllTasks, SetAllTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -43,13 +43,6 @@ export default function AdminTask() {
       await axios.post("http://localhost:4000/tasks", Tasks);
       toast.success("Task created successfully!", { autoClose: 1800, position: "top-center" });
       fetchData();
-      SetTasks({
-        TaskTopic: "",
-        Description: "",
-        DueDate: "",
-        Batch: "",
-        status: "",
-      });
       closeModal();
     } catch (error) {
       console.error("Error creating task: ", error);
@@ -92,11 +85,11 @@ export default function AdminTask() {
   const closeModal = () => {
     setSelectedTaskId(null);
     SetTasks({
-      TaskTopic: "",
-      Description: "",
-      DueDate: "",
-      Batch: "",
-      status: "",
+      TaskTopic: null,
+      Description: null,
+      DueDate: null,
+      Batch: null,
+      status: null,
     });
   };
 
@@ -106,6 +99,7 @@ export default function AdminTask() {
       task.Description.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
+
   return (
     <div id="admintask">  
     <div className="d-flex">
@@ -137,22 +131,22 @@ export default function AdminTask() {
         
       </div>
       <br></br>
-      <div className="row">
+     <div className="row">
         <div>
           <h1 style={{ marginLeft: 50, textAlign: "center" }}>Assigned Tasks</h1>
           <br></br>
           <ul id="border">
             {filteredTasks.map((task) => (
               <h3 key={task.id} className="card mb-4 d-flex">
-                <span>Task Topic : {task.TaskTopic} </span>
+                <span>Task Topic : {task.TaskTopic || 'N/A'} </span>
                 <br></br>
-                <span>Description : {task.Description} </span>
+                <span>Description : {task.Description || 'N/A'} </span>
                 <br></br>
-                <span>Due Date {task.DueDate} </span>
+                <span>Due Date {task.DueDate || 'N/A'} </span>
                 <br></br>
-                <span>Batch : {task.Batch}</span>
+                <span>Batch : {task.Batch || 'N/A'}</span>
                 <br></br>
-                <span>Status :{task.status}</span>
+                <span>Status : {task.status || 'N/A'}</span>
                 <div className="d-flex">
                   <button
                     className="btn btn-warning"

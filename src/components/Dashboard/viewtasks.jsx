@@ -7,10 +7,7 @@ const Viewtasks = () => {
   const { user } = useContext(UserContext);
   const [tasks, setTasks] = useState([]);
   const [userBatch, setUserBatch] = useState('');
-  const [updatedTopics, setUpdatedTopics] = useState({});
-  const [updatedDescriptions, setUpdatedDescriptions] = useState({});
-  const [updatedDueDates, setUpdatedDueDates] = useState({});
-  const [updatedBatches, setUpdatedBatches] = useState({});
+  const [updatedTasks, setUpdatedTasks] = useState({});
   const [userTasks, setUserTasks] = useState([]);
 
   const fetchData = useCallback(async () => {
@@ -36,158 +33,142 @@ const Viewtasks = () => {
     fetchData();
   }, [fetchData]);
 
-  const handleTopicChange = (e, taskId) => {
-    setUpdatedTopics((prevTopics) => ({
-      ...prevTopics,
-      [taskId]: e.target.value,
-    }));
-  };
-
-  const handleDescriptionChange = (e, taskId) => {
-    setUpdatedDescriptions((prevDescriptions) => ({
-      ...prevDescriptions,
-      [taskId]: e.target.value,
-    }));
-  };
-
-  const handleDueDateChange = (e, taskId) => {
-    setUpdatedDueDates((prevDueDates) => ({
-      ...prevDueDates,
-      [taskId]: e.target.value,
-    }));
-  };
-
-  const handleBatchValueChange = (e, taskId) => {
-    setUpdatedBatches((prevBatches) => ({
-      ...prevBatches,
-      [taskId]: e.target.value,
-    }));
-  };
-
-  const handleStatusChange = async (taskId, newStatus) => {
-    const taskToUpdate = tasks.find((task) => task.id === taskId);
-    if (!taskToUpdate) return;
-
-    try {
-      await axios.put(`http://localhost:4000/tasks/${taskId}`, {
+  const handleStatusChange = (taskId, e) => {
+    const newStatus = e.target.value;
+    setUpdatedTasks((prevTasks) => ({
+      ...prevTasks,
+      [taskId]: {
+        ...prevTasks[taskId],
         status: newStatus,
-        TaskTopic: updatedTopics[taskId] || taskToUpdate.TaskTopic,
-        Description: updatedDescriptions[taskId] || taskToUpdate.Description,
-        DueDate: updatedDueDates[taskId] || taskToUpdate.DueDate,
-        Batch: updatedBatches[taskId] || taskToUpdate.Batch,
-      });
+        TaskTopic: prevTasks[taskId]?.TaskTopic || '',
+        Description: prevTasks[taskId]?.Description || '',
+        DueDate: prevTasks[taskId]?.DueDate || '',
+        Batch: prevTasks[taskId]?.Batch || '',
+      },
+    }));
+  };
 
-      // Update the tasks in the state with the new status and updated fields
+  const updateTasks = async () => {
+    try {
+      for (const taskId in updatedTasks) {
+        const updatedTask = updatedTasks[taskId];
+        const taskToUpdate = tasks.find((task) => task.id === taskId);
+        if (!taskToUpdate) continue;
+
+        await axios.put(`http://localhost:4000/tasks/${taskId}`, updatedTask);
+      }
+
       setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === taskId
-            ? {
-                ...task,
-                status: newStatus,
-                TaskTopic: updatedTopics[taskId] || task.TaskTopic,
-                Description: updatedDescriptions[taskId] || task.Description,
-                DueDate: updatedDueDates[taskId] || task.DueDate,
-                Batch: updatedBatches[taskId] || task.Batch,
-              }
-            : task
-        )
+        prevTasks.map((task) => ({
+          ...task,
+          status: updatedTasks[task.id]?.status || task.status,
+          TaskTopic: updatedTasks[task.id]?.TaskTopic || task.TaskTopic,
+          Description: updatedTasks[task.id]?.Description || task.Description,
+          DueDate: updatedTasks[task.id]?.DueDate || task.DueDate,
+          Batch: updatedTasks[task.id]?.Batch || task.Batch,
+        }))
       );
+
+      setUpdatedTasks({});
     } catch (error) {
-      console.error('Error updating task status: ', error);
+      console.error('Error updating tasks: ', error);
     }
   };
 
+  useEffect(() => {
+    if (Object.keys(updatedTasks).length > 0) {
+      updateTasks();
+    }
+  }, [updatedTasks]);
+
   return (
     <div>
-    {user.loggedIn && userBatch ? (
-      <div>
-        <h1 style={{ fontSize: 36, color: 'darkred' }}>Tasks Assigned to Batch ({userBatch})</h1>
-<br></br>
-        {userTasks.length > 0 ? (
-          <div className="container">
-            <Table id="hj">
-              <thead>
-               
-                  <th>Task Topic</th>
-                  <th>Description</th>
-                  <th>Due Date</th>
-                  <th>Assigned To</th>
-                  <th>Status</th>
-                
-              </thead>
-              <tbody>
-                {userTasks.map((task) => (
-                  <tr key={task.id}>
-                    <td>
-                      {updatedTopics[task.id] ? (
+      {user.loggedIn && userBatch ? (
+        <div>
+          <h1 style={{ fontSize: 36, color: 'darkred' }}>Tasks Assigned to Batch ({userBatch})</h1>
+          <br />
+          {userTasks.length > 0 ? (
+            <div className="container">
+              <Table id="hj">
+                <thead>
+                  <tr>
+                    <th>Task Topic</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {userTasks.map((task) => (
+                    <tr key={task.id}>
+                      <td>
                         <input
                           type="text"
-                          value={updatedTopics[task.id]}
-                          onChange={(e) => handleTopicChange(e, task.id)}
+                          value={updatedTasks[task.id]?.TaskTopic || task.TaskTopic}
+                          onChange={(e) =>
+                            setUpdatedTasks((prevTasks) => ({
+                              ...prevTasks,
+                              [task.id]: {
+                                ...prevTasks[task.id],
+                                TaskTopic: e.target.value,
+                              },
+                            }))
+                          }
                         />
-                      ) : (
-                        task.TaskTopic
-                      )}
-                    </td>
-                    <td>
-                      {updatedDescriptions[task.id] ? (
+                      </td>
+                      <td>
                         <input
                           type="text"
-                          value={updatedDescriptions[task.id]}
-                          onChange={(e) => handleDescriptionChange(e, task.id)}
+                          value={updatedTasks[task.id]?.Description || task.Description}
+                          onChange={(e) =>
+                            setUpdatedTasks((prevTasks) => ({
+                              ...prevTasks,
+                              [task.id]: {
+                                ...prevTasks[task.id],
+                                Description: e.target.value,
+                              },
+                            }))
+                          }
                         />
-                      ) : (
-                        task.Description
-                      )}
-                    </td>
-                    <td>
-                      {updatedDueDates[task.id] ? (
+                      </td>
+                      <td>
                         <input
                           type="date"
-                          value={updatedDueDates[task.id]}
-                          onChange={(e) => handleDueDateChange(e, task.id)}
+                          value={updatedTasks[task.id]?.DueDate || task.DueDate}
+                          onChange={(e) =>
+                            setUpdatedTasks((prevTasks) => ({
+                              ...prevTasks,
+                              [task.id]: {
+                                ...prevTasks[task.id],
+                                DueDate: e.target.value,
+                              },
+                            }))
+                          }
                         />
-                      ) : (
-                        task.DueDate
-                      )}
-                    </td>
-                    <td>
-                      {updatedBatches[task.id] ? (
+                      </td>
+                      <td>{task.Batch}</td>
+                      <td>
                         <input
                           type="text"
-                          value={updatedBatches[task.id]}
-                          onChange={(e) => handleBatchValueChange(e, task.id)}
+                          value={updatedTasks[task.id]?.status || task.status}
+                          onChange={(e) => handleStatusChange(task.id, e)}
                         />
-                      ) : (
-                        task.Batch
-                      )}
-                    </td>
-                    <td>
-                      <select
-                        value={task.status}
-                        onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                      >
-                        <option value="Select Progress" disabled>
-                          Select Progress
-                        </option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
-        ) : (
-          <p>No tasks found for the selected batch.</p>
-        )}
-      </div>
-    ) : (
-      <p>Please log in or check your batch information.</p>
-    )}
-  </div>
-);
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          ) : (
+            <p>No tasks found for the selected batch.</p>
+          )}
+        </div>
+      ) : (
+        <p>Please log in or check your batch information.</p>
+      )}
+    </div>
+  );
 };
 
 export default Viewtasks;

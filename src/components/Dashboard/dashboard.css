@@ -62,7 +62,7 @@ h2{
 td:hover{
   background-color: rgb(234, 173, 170);
 }
-thead{
+  thead{
   background-color: rgb(5, 16, 26);
   color: #fff;
   font-size: 25px;

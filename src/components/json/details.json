@@ -140,7 +140,7 @@
       "id": 3
     },
     {
-      "status": "In Progress",
+      "status": "Completed",
       "TaskTopic": "React with PHP",
       "Description": "Create a web application with React and PHP",
       "DueDate": "2023-07-20",

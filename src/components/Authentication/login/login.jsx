@@ -19,7 +19,7 @@ const Login = () => {
 
   if (user.loggedIn) {
     return <>
-    <Navigate to="/ " />;
+    <Navigate to="/" />;
     {viewTasksVisible && <Viewtasks batch={batch} />}
     </>
   }
