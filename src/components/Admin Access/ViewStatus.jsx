@@ -76,13 +76,13 @@ export default function ViewStatus() {
       {dataLoaded ? (
         <table className="table table-striped">
           <thead>
-            <tr>
+           
               <th>Batch</th>
               <th>Task Topic</th>
               <th>Status</th>
               <th>Due Date</th>
               <th>Completed By</th>
-            </tr>
+           
           </thead>
           <tbody>
             {sortedAndFilteredViewStatus.map((task) => (
