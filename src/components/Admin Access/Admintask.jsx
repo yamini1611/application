@@ -20,7 +20,13 @@ export default function AdminTask() {
   useEffect(() => {
     fetchData();
     fetchLoginData();
+    return () => {
+      // Clean up state when the component is unmounted
+      setSelectedTaskId(null);
+      setSearchQuery("");
+    };
   }, []);
+
 
   const fetchData = async () => {
     try {
@@ -164,8 +170,7 @@ export default function AdminTask() {
                 <br></br>
                 <span>Batch : {task.Batch || "N/A"}</span>
                 <br></br>
-                <span>Status : {task.status || "N/A"}</span>
-                <br></br>
+              
 
                 <div className="d-flex">
                   <button

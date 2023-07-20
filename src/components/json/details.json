@@ -59,24 +59,6 @@
       "status": "Completed",
       "completedBy": "Meenu",
       "id": 2
-    },
-    {
-      "TaskTopic": "sdfs",
-      "Description": "fcvcxv",
-      "DueDate": "2023-07-21",
-      "Batch": "2022-2025",
-      "status": "Completed",
-      "id": 3,
-      "completedBy": "Amutha"
-    },
-    {
-      "TaskTopic": "sdf",
-      "Description": "dsf",
-      "DueDate": "2023-07-21",
-      "Batch": "2020-2023",
-      "status": "Completed",
-      "id": 4,
-      "completedBy": "jawahar"
     }
   ],
   "viewStatus": [
