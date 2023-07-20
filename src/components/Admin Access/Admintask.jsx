@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
 export default function AdminTask() {
   const [Tasks, SetTasks] = useState({
-    TaskTopic: null,
-    Description: null,
-    DueDate: null,
-    Batch: null,
-    status: null,
+    TaskTopic: "",
+    Description: "",
+    DueDate: "",
+    Batch: "",
+    status: "",
   });
 
   const [AllTasks, SetAllTasks] = useState([]);
@@ -51,13 +52,17 @@ export default function AdminTask() {
       [name]: value,
     }));
   };
-
+  const filteredTasks = AllTasks.filter((task) => {
+    return (
+      task.TaskTopic.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.Description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
   const handlepost = async (e) => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:4000/tasks", {
-        ...Tasks, // Pass all the task details
-        CompletedBy: Tasks.CompletedBy, // Include the CompletedBy field with the email
+        ...Tasks,
       });
       toast.success("Task created successfully!", { autoClose: 1800, position: "top-center" });
       fetchData();
@@ -71,8 +76,7 @@ export default function AdminTask() {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:4000/tasks/${selectedTaskId}`, {
-        ...Tasks, // Pass all the existing task details
-        CompletedBy: Tasks.CompletedBy, // Include the CompletedBy field with the email
+        ...Tasks,
       });
       toast.success("Task updated successfully!", { autoClose: 1800, position: "top-center" });
       fetchData();
@@ -100,67 +104,57 @@ export default function AdminTask() {
       DueDate: task.DueDate,
       Batch: task.Batch,
       status: task.status,
-
     });
   };
 
   const closeModal = () => {
     setSelectedTaskId(null);
     SetTasks({
-      TaskTopic: null,
-      Description: null,
-      DueDate: null,
-      Batch: null,
-      status: null,
-
+      TaskTopic: "",
+      Description: "",
+      DueDate: "",
+      Batch: "",
+      status: "",
     });
   };
 
-  const filteredTasks = AllTasks.filter((task) => {
-    return (
-      task.TaskTopic.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.Description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
   return (
-    <div id="admintask" style={{ fontSize: 22.1, fontFamily: "Product Sans,Arial,Helvetica,sans-serif" ,marginLeft:120}}>
+    <div id="admintask" style={{ fontSize: 22.1, fontFamily: "Product Sans,Arial,Helvetica,sans-serif", marginLeft: 120 }}>
       <div className="row">
         <div className=" col-11">
-          <div className="">
-            <div className="d-flex">
-            <label>SEARCH : </label>
-            <input
-              style={{ paddingLeft: 6, marginLeft: 10 }}
-              type="text"
-              className=""
-              placeholder="Search by Task Topic"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <h5 style={{ fontSize: 20,marginLeft:400}}><Link to="/ViewStatus" style={{ textDecoration: "none" }}>View Status</Link></h5>
-          </div></div>
-
+        <div className="">
+          <div className="d-flex">
+          <label>SEARCH : </label>
+          <input
+            style={{ paddingLeft: 6, marginLeft: 10 }}
+            type="text"
+            className=""
+            placeholder="Search by Task Topic"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <h5 style={{ fontSize: 20,marginLeft:400}}><Link to="/ViewStatus" style={{ textDecoration: "none" }}>View Status</Link></h5>
         </div></div>
 
-      <div className="col-8" style={{ display: "flex" }}>
-        <h1 style={{ marginTop: 50, marginLeft: 0, fontSize: 32.1, fontFamily: "Product Sans,Arial,Helvetica,sans-serif" }}>ADMIN TASK CREATION</h1>
-        <button
+      </div></div>
+      <br></br>
+      <div className="row">
+        <div className="d-flex">
+          <h1 style={{ marginLeft: 250, textAlign: "center" }}>Assigned Tasks</h1>
+          <button
           id="assign"
-          style={{ height: 40, marginTop: 50, marginLeft: 50 }}
+          style={{ height: 40, marginLeft: 50 }}
           className="btn btn-dark"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
           ASSIGN TASK
         </button>
-      </div>
-      <br></br>
-      <div className="row">
-        <div>
-          <h1 style={{ marginLeft: 50, textAlign: "center" }}>Assigned Tasks</h1>
+        </div>
           <br></br>
+
           <ul id="border">
-            {filteredTasks.map((task) => (
+          {filteredTasks.map((task) => (
               <h3 key={task.id} className="card mb-4 d-flex">
                 <span>Task Topic : {task.TaskTopic || "N/A"} </span>
                 <br></br>
@@ -191,7 +185,7 @@ export default function AdminTask() {
             ))}
           </ul>
         </div>
-      </div>
+      
       <div
         className="modal fade"
         id="staticBackdrop"
@@ -315,3 +309,4 @@ export default function AdminTask() {
     </div>
   );
 }
+

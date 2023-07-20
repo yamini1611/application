@@ -1,24 +1,24 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { UserContext } from '../Authentication/Context';
+import { toast } from 'react-toastify';
 
 const Viewtasks = () => {
   const { user } = useContext(UserContext);
   const [tasks, setTasks] = useState([]);
   const [userBatch, setUserBatch] = useState('');
-  const [updatedTasks, setUpdatedTasks] = useState({});
   const [userTasks, setUserTasks] = useState([]);
-  const [completedBy, setCompletedBy] = useState({}); // Store completedBy names
+  const [completedBy, setCompletedBy] = useState(''); // Store completedBy name
 
   const fetchData = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:4000/tasks');
       setTasks(response.data);
-  
+
       const loginResponse = await axios.get('http://localhost:4000/login');
       const userData = loginResponse.data;
-  
+
       const loggedInUser = userData.find((userItem) => userItem.email === user.email);
       if (loggedInUser) {
         setUserBatch(loggedInUser.batch);
@@ -30,7 +30,6 @@ const Viewtasks = () => {
       console.error('Error fetching data: ', error);
     }
   }, [user.email]);
-  
 
   useEffect(() => {
     fetchData();
@@ -41,45 +40,51 @@ const Viewtasks = () => {
     if (!taskToUpdate) return;
 
     try {
+      toast.success('Status updated successfully!', { autoClose: 1800, position: 'top-center' });
+
+      // Update status on the server-side
       await axios.put(`http://localhost:4000/tasks/${taskId}`, {
-        ...taskToUpdate, // Keep the existing fields
-        status: newStatus, // Update the status field
-        completedBy: completedBy, // Add the completedBy field with the name of the logged-in user
+        ...taskToUpdate,
+        status: newStatus,
       });
 
-      // Update the tasks in the state with the new status
-      setTasks((prevTasks) =>
-        prevTasks.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
-      );
+      // Save completed tasks with user's name to /TasksCompleted endpoint
+      if (newStatus === 'Completed') {
+        await axios.post('http://localhost:4000/viewStatus', {
+          status: newStatus,
+          completedBy,
+          DueDate:taskToUpdate.DueDate,
+          Batch: taskToUpdate.Batch,
+          TaskTopic: taskToUpdate.TaskTopic,
+        });
+      }
 
-      // Update the updatedTasks state to reflect the change
-      setUpdatedTasks((prevUpdatedTasks) => ({
-        ...prevUpdatedTasks,
-        [taskId]: { ...taskToUpdate, status: newStatus },
-      }));
+      fetchData(); // Refetch the tasks to get the updated data
     } catch (error) {
       console.error('Error updating task status: ', error);
     }
   };
 
   return (
-    <div style={{ fontSize: 22.1,fontFamily: "Product Sans,Arial,Helvetica,sans-serif" ,marginTop:100}}>
+    <div style={{ fontSize: 22.1, fontFamily: 'Product Sans,Arial,Helvetica,sans-serif', marginTop: 100 }}>
       {user.loggedIn && userBatch ? (
         <div>
-          <h1 style={{ fontSize: 36, color: 'darkred' ,textAlign:"center" }}>Tasks Assigned to Batch ({userBatch})</h1>
+          <h1 style={{ fontSize: 36, color: 'darkred', textAlign: 'center' }}>
+            Tasks Assigned to Batch ({userBatch})
+          </h1>
           <br />
           {userTasks.length > 0 ? (
             <div className="container">
               <Table id="hj">
                 <thead>
-                 
+                  <tr>
                     <th>Task Topic</th>
                     <th>Description</th>
                     <th>Due Date</th>
                     <th>Assigned To</th>
                     <th>Status</th>
                     <th>Completed By</th> {/* New column for Completed By */}
-                  
+                  </tr>
                 </thead>
                 <tbody>
                   {userTasks.map((task) => (
@@ -89,11 +94,18 @@ const Viewtasks = () => {
                       <td>{task.DueDate}</td>
                       <td>{task.Batch}</td>
                       <td>
-                        <input
-                          type="text"
-                          value={updatedTasks[task.id]?.status || task.status}
-                          onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                        />
+                        <Button
+                          onClick={() => handleStatusChange(task.id, 'In Progress')}
+                          style={{ marginRight: 10, backgroundColor: 'yellow', color: 'black' }}
+                        >
+                          In Progress
+                        </Button>
+                        <Button
+                          style={{ backgroundColor: 'green', color: 'white' }}
+                          onClick={() => handleStatusChange(task.id, 'Completed')}
+                        >
+                          Completed
+                        </Button>
                       </td>
                       <td>{completedBy}</td>
                     </tr>

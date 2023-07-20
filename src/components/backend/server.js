@@ -1,8 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const path = require('path');
 const axios = require('axios');
 
 const app = express();
@@ -48,82 +46,68 @@ app.post('/logout', (req, res) => {
   res.json({ message: 'Logout successful' });
 });
 
-const tasksFilePath = path.join(__dirname, 'tasks.json');
-
-const readTasksFromFile = () => {
+app.get('/tasks', async (req, res) => {
   try {
-    const data = fs.readFileSync(tasksFilePath);
-    return JSON.parse(data);
+    const response = await axios.get('http://localhost:4000/tasks');
+    const tasks = response.data;
+    const batch = req.query.batch;
+    const filteredTasks = batch ? tasks.filter((task) => task.Batch === batch) : tasks;
+    res.json(filteredTasks);
   } catch (error) {
-    console.error('Error reading tasks from file: ', error);
-    return [];
+    console.error('Error fetching tasks from API: ', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
-};
-
-const saveTasksToFile = (tasks) => {
-  try {
-    fs.writeFileSync(tasksFilePath, JSON.stringify(tasks, null, 2));
-  } catch (error) {
-    console.error('Error saving tasks to file: ', error);
-  }
-};
-
-app.get('/tasks', (req, res) => {
-  const tasks = readTasksFromFile();
-  const batch = req.query.batch;
-  const filteredTasks = batch ? tasks.filter((task) => task.Batch === batch) : tasks;
-  res.json(filteredTasks);
 });
 
 app.put('/tasks', async (req, res) => {
   const updatedTasks = req.body;
 
   try {
-    const tasks = readTasksFromFile();
+    const response = await axios.put('http://localhost:4000/tasks', updatedTasks);
+    const updatedTasksResponse = response.data;
 
-    for (const updatedTask of updatedTasks) {
-      const taskId = updatedTask.id;
-      const taskToUpdate = tasks.find((task) => task.id === parseInt(taskId));
-
-      if (!taskToUpdate) {
-        return res.status(404).json({ message: 'Task not found' });
-      }
-
-      for (const key in updatedTask) {
-        taskToUpdate[key] = updatedTask[key];
-      }
-
-      // Retrieve the user's name from the /login endpoint
-      const userResponse = await axios.get('http://localhost:4000/login');
-      const userData = userResponse.data;
-      const user = userData.find((userItem) => userItem.email === req.session.user.email);
-
-      if (user) {
-        taskToUpdate.completedBy = user.name;
-      }
-    }
-
-    saveTasksToFile(tasks);
-
-    return res.status(200).json(updatedTasks);
+    return res.status(200).json(updatedTasksResponse);
   } catch (error) {
     console.error('Error updating tasks: ', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-app.post('/TasksCompleted', (req, res) => {
+app.get('/viewStatus', async (req, res) => {
+  try {
+    const response = await axios.get('http://localhost:4000/viewStatus');
+    const viewStatusData = response.data;
+    const batch = req.query.batch;
+    const filteredViewStatus = batch ? viewStatusData.filter((task) => task.Batch === batch) : viewStatusData;
+    res.json(filteredViewStatus);
+  } catch (error) {
+    console.error('Error fetching viewStatus from API: ', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/viewStatus', async (req, res) => {
   const { status, completedBy, Batch, TaskTopic } = req.body;
 
   if (!status || !completedBy || !Batch || !TaskTopic) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Process the data or save it to the database
-  // For this example, we'll just log the received data
-  console.log('Received Completed Task:', req.body);
+  try {
+    const response = await axios.post('http://localhost:4000/viewStatus', {
+      status,
+      completedBy,
+      Batch,
+      TaskTopic,
+    });
 
-  return res.status(200).json({ message: 'Completed Task Received' });
+    console.log('Received Completed Task:', req.body);
+
+    return res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Error saving completed task: ', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.listen(port, () => {
