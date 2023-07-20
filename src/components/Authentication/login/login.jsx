@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../Context';
 import '../login/login.css';
-import Viewtasks from '../../Dashboard/viewtasks';
 
+import Viewtasks from '../../Dashboard/viewtasks';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,20 +12,28 @@ const Login = () => {
   const [batch, setBatch] = useState(''); 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(email, password, batch); 
-    setViewTasksVisible(true)
-    
+    handleLogin(email, password, batch);
+  
+    if (user.loggedIn) {
+      setViewTasksVisible(true);
+     
+    }
   };
+  
 
   if (user.loggedIn) {
+  
+
     return <>
+  
     <Navigate to="/" />;
+
     {viewTasksVisible && <Viewtasks batch={batch} />}
     </>
   }
 
   return (
-    <section className="vh-110" id="close">
+    <section className="vh-110" id="close" style={{ fontSize: 22.1 ,fontFamily: "Product Sans,Arial,Helvetica,sans-serif"}}>
       <div className="container py-5 h-100">
         <div className="col col-xl-10">
           <div className="row g-0">
@@ -40,8 +48,8 @@ const Login = () => {
               <div className="card-body p-4 p-lg-5 text-black">
                 <form onSubmit={handleSubmit}>
                   <div className="d-flex align-items-center mb-3 pb-1">
-                    <i className="fas fa-cubes fa-2x me-3" style={{ color: '#ff6219' }}></i>
-                    <span className="h1 fw-bold mb-0">Logo</span>
+                    <i className="fas fa-cubes fa-2x me-3" style={{ color:"lavender" }}></i>
+                    <span className="h1 fw-bold mb-0">Login</span>
                   </div>
                   <h5 className="fw-normal mb-3 pb-3" style={{ letterSpacing: '1px' }}>
                     Sign into your account
@@ -86,7 +94,7 @@ const Login = () => {
                     </select>
                   </div>
                   <div className="pt-1 mb-4">
-                    <button className="btn btn-dark btn-lg btn-block" type="submit">
+                    <button className="btn btn-dark btn-lg btn-block" type="submit" >
                       Login
                     </button>
                   </div>
@@ -107,6 +115,7 @@ const Login = () => {
             </div>
           </div>
         </div>
+       
       </div> 
       {viewTasksVisible && <Viewtasks batch={batch} />}
     </section>

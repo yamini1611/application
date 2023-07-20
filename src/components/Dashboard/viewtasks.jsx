@@ -63,23 +63,23 @@ const Viewtasks = () => {
   };
 
   return (
-    <div>
+    <div style={{ fontSize: 22.1,fontFamily: "Product Sans,Arial,Helvetica,sans-serif" ,marginTop:100}}>
       {user.loggedIn && userBatch ? (
         <div>
-          <h1 style={{ fontSize: 36, color: 'darkred' }}>Tasks Assigned to Batch ({userBatch})</h1>
+          <h1 style={{ fontSize: 36, color: 'darkred' ,textAlign:"center" }}>Tasks Assigned to Batch ({userBatch})</h1>
           <br />
           {userTasks.length > 0 ? (
             <div className="container">
               <Table id="hj">
                 <thead>
-                  <tr>
+                 
                     <th>Task Topic</th>
                     <th>Description</th>
                     <th>Due Date</th>
                     <th>Assigned To</th>
                     <th>Status</th>
                     <th>Completed By</th> {/* New column for Completed By */}
-                  </tr>
+                  
                 </thead>
                 <tbody>
                   {userTasks.map((task) => (

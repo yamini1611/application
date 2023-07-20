@@ -39,12 +39,12 @@ const Signup = () => {
   };
 
   return (
-    <section className="vh-100" style={{ backgroundColor: 'white', marginTop: 80 }}>
+    <section className="vh-100"style={{ fontSize: 18.1,backgroundColor:"white" ,fontFamily: "Product Sans,Arial,Helvetica,sans-serif" ,marginTop:80}}>
       <div className="container h-100">
         <div className="col-lg-12 col-xl-11">
           <div className="row justify-content-center">
             <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-              <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+              <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign Up Form</p>
               <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
                 <div className="d-flex flex-row align-items-center mb-4">
                   <div className="form-outline flex-fill mb-0">
@@ -148,9 +148,9 @@ const Signup = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
+       
       </div>
-      
+      <ToastContainer />
     </section>
   );
 };

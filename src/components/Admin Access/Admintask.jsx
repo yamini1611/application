@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { Link } from 'react-router-dom'
 export default function AdminTask() {
   const [Tasks, SetTasks] = useState({
     TaskTopic: null,
@@ -18,7 +18,7 @@ export default function AdminTask() {
 
   useEffect(() => {
     fetchData();
-    fetchLoginData(); 
+    fetchLoginData();
   }, []);
 
   const fetchData = async () => {
@@ -38,7 +38,7 @@ export default function AdminTask() {
       userData.forEach((user) => {
         completedByMapData[user.email] = user.name;
       });
-      
+
     } catch (error) {
       console.error("Error fetching login data: ", error);
     }
@@ -100,7 +100,7 @@ export default function AdminTask() {
       DueDate: task.DueDate,
       Batch: task.Batch,
       status: task.status,
-     
+
     });
   };
 
@@ -112,7 +112,7 @@ export default function AdminTask() {
       DueDate: null,
       Batch: null,
       status: null,
-     
+
     });
   };
 
@@ -123,23 +123,27 @@ export default function AdminTask() {
     );
   });
   return (
-    <div id="admintask">
-      <div className="d-flex">
-        <div className="input-group">
-          <label>SEARCH : </label>
-          <input
-            style={{ paddingLeft: 6, marginLeft: 10 }}
-            type="text"
-            className=""
-            placeholder="Search by Task Topic"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
+    <div id="admintask" style={{ fontSize: 22.1, fontFamily: "Product Sans,Arial,Helvetica,sans-serif" ,marginLeft:120}}>
+      <div className="row">
+        <div className=" col-11">
+          <div className="">
+            <div className="d-flex">
+            <label>SEARCH : </label>
+            <input
+              style={{ paddingLeft: 6, marginLeft: 10 }}
+              type="text"
+              className=""
+              placeholder="Search by Task Topic"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <h5 style={{ fontSize: 20,marginLeft:400}}><Link to="/ViewStatus" style={{ textDecoration: "none" }}>View Status</Link></h5>
+          </div></div>
+
+        </div></div>
 
       <div className="col-8" style={{ display: "flex" }}>
-        <h1 style={{ marginTop: 50, marginLeft: 0 }}>ADMIN TASK CREATION</h1>
+        <h1 style={{ marginTop: 50, marginLeft: 0, fontSize: 32.1, fontFamily: "Product Sans,Arial,Helvetica,sans-serif" }}>ADMIN TASK CREATION</h1>
         <button
           id="assign"
           style={{ height: 40, marginTop: 50, marginLeft: 50 }}
@@ -168,7 +172,7 @@ export default function AdminTask() {
                 <br></br>
                 <span>Status : {task.status || "N/A"}</span>
                 <br></br>
-               
+
                 <div className="d-flex">
                   <button
                     className="btn btn-warning"

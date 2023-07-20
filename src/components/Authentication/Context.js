@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -11,14 +12,23 @@ const UserProvider = ({ children }) => {
 
   const handleLogin = async (email, password) => {
     try {
-      // Fetch user data from the API
+  
       const response = await fetch('http://localhost:4000/login');
       const data = await response.json();
 
-      // Check if the email and password match any registered user
+
       const registeredUser = data.find(user => user.email === email && user.password === password);
 
       if (registeredUser) {
+        toast.success('Login successful!', {
+          position: 'top-right',
+          autoClose: 3000, 
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         setUser({
           loggedIn: true,
           email,
@@ -43,6 +53,15 @@ const UserProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
+    toast.success('Logged out successful!', {
+      position: 'top-right',
+      autoClose: 3000, 
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     setUser({
       loggedIn: false,
       email: '',
@@ -50,11 +69,13 @@ const UserProvider = ({ children }) => {
     });
   };
 
-  // ... update the user state or retrieve it from local storage ...
+
 
   return (
     <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
       {children}
+      <ToastContainer />
+
     </UserContext.Provider>
   );
 };

@@ -19,6 +19,13 @@
       "password": "meenu",
       "batch": "2021-2024",
       "id": 3
+    },
+    {
+      "name": "Amutha",
+      "email": "amutha@gmail.com",
+      "password": "amutha",
+      "batch": "2023-2025",
+      "id": 4
     }
   ],
   "checkAuth": [],
@@ -116,13 +123,31 @@
   ],
   "tasks": [
     {
-      "TaskTopic": "dsfdsfd",
-      "Description": "dsf",
+      "TaskTopic": "React Login form ",
+      "Description": "React login Form with Validation",
       "DueDate": "2023-07-21",
       "Batch": "2020-2023",
-      "status": "completed",
+      "status": "Completed",
       "id": 1,
       "completedBy": "Yamini"
+    },
+    {
+      "TaskTopic": " Dot Net Programming",
+      "Description": " Dot Net Programming",
+      "DueDate": "2023-07-22",
+      "Batch": "2021-2024",
+      "status": "Completed",
+      "completedBy": "Meenu",
+      "id": 2
+    },
+    {
+      "TaskTopic": "sdfs",
+      "Description": "fcvcxv",
+      "DueDate": "2023-07-21",
+      "Batch": "2023-2025",
+      "status": "Completed",
+      "id": 3,
+      "completedBy": "Amutha"
     }
   ],
   "TasksCompleted": []

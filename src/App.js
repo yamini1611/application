@@ -10,6 +10,7 @@ import Home from './components/homepage/homepage'; // Import your Home component
 import Signup from './components/Authentication/signup/signup';
 import AdminTask from './components/Admin Access/Admintask';
 import Viewtasks from './components/Dashboard/viewtasks';
+import ViewStatus from './components/Admin Access/ViewStatus';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
          <Route  path="view" element={<Viewtasks />}></Route>
          <Route  path="/Admin" element={<Admin />}></Route>
          <Route  path="/Admin1" element={<AdminTask />}></Route>
+         <Route  path="/ViewStatus" element={<ViewStatus />}></Route>
           <Route path="/" element={<Home />} />
         </Routes>
       </Router>
