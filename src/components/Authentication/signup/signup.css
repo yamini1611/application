@@ -1,18 +1,11 @@
-#close{
-    background-color: rgb(169, 170, 155);
-    
-}
-
-#vt{
-    visibility: hidden;
-}
-
-#cv{
+#ch{
     color: #5f6368;
     font-family: "Product Sans",Arial,Helvetica,sans-serif;
-    font-size:35px;
+    font-size: 45px;
     position: relative;
     top: -0.375rem;
+    font-weight: 100;
+   
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }

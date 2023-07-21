@@ -41,7 +41,7 @@ const Viewtasks = () => {
 
     try {
       toast.success('Status updated successfully!', { autoClose: 1800, position: 'top-center' });
-
+      
       // Update status on the server-side
       await axios.put(`http://localhost:4000/tasks/${taskId}`, {
         ...taskToUpdate,
@@ -50,13 +50,15 @@ const Viewtasks = () => {
 
       // Save completed tasks with user's name to /TasksCompleted endpoint
       if (newStatus === 'Completed') {
+        
         await axios.post('http://localhost:4000/viewStatus', {
           status: newStatus,
           completedBy,
-          DueDate:taskToUpdate.DueDate,
+          DueDate: taskToUpdate.DueDate,
           Batch: taskToUpdate.Batch,
           TaskTopic: taskToUpdate.TaskTopic,
         });
+        
       }
 
       fetchData(); // Refetch the tasks to get the updated data
@@ -77,14 +79,13 @@ const Viewtasks = () => {
             <div className="container">
               <Table id="hj">
                 <thead>
-                  <tr>
-                    <th>Task Topic</th>
-                    <th>Description</th>
-                    <th>Due Date</th>
-                    <th>Assigned To</th>
-                    <th>Status</th>
-                    <th>Completed By</th> {/* New column for Completed By */}
-                  </tr>
+
+                  <th>Task Topic</th>
+                  <th>Description</th>
+                  <th>Due Date</th>
+                  <th>Assigned To</th>
+                  <th>Status</th>
+                  <th>Completed By</th>
                 </thead>
                 <tbody>
                   {userTasks.map((task) => (
@@ -93,6 +94,7 @@ const Viewtasks = () => {
                       <td>{task.Description}</td>
                       <td>{task.DueDate}</td>
                       <td>{task.Batch}</td>
+
                       <td>
                         <Button
                           onClick={() => handleStatusChange(task.id, 'In Progress')}

@@ -32,21 +32,24 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0 mt-0" style={{marginTop:-1}}>
             <li className="nav-item">
-              <Link className="nav-link" to="/"><img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google" height="24px" width="74px" data-iml="3068.89999999851"></img></Link>
+              <Link className="nav-link " to="/"><img src="https://edu.google.com/assets/icons/pages/main/workspace-for-education/classroom/classroom-banner-2.svg" alt='' ></img></Link>
+            </li>
+            <li className="nav-item">
+             <Link className="nav-link  mt-1"   to="/classmates">People</Link>
             </li>
             {isAdmin && (
               <>
-                <li> <Link className="nav-link" to="/Admin1">Admin Tasks</Link></li>
+                <li> <Link className="nav-link mt-1" to="/Admin1"> Tasks  Assigned</Link></li>
                 
                
                  <li className="nav-item">
-                  <Link className="nav-link" to="/login" onClick={handleLogoutClick}>Logout</Link>
+                  <Link className="nav-link mt-1" to="/login" onClick={handleLogoutClick}>Logout</Link>
                 </li>
                 {userData.length > 0 && (
                   <li className="nav-item">
-                    <h3 style={{ fontSize: 22.1 ,fontFamily: "Product Sans,Arial,Helvetica,sans-serif" , color:"grey" ,marginTop:11 ,marginLeft:650}}><i className="fa-solid fa-user fa-flip" ></i>  Admin </h3> 
+                    <h3 style={{ fontSize: 22.1 ,fontFamily: "Product Sans,Arial,Helvetica,sans-serif" , color:"grey" ,marginTop:11 ,marginLeft:650}}><i className="fa-solid fa-user fa-flip" ></i> Pallavi Katari</h3> 
                   </li>
 
                   
@@ -58,10 +61,10 @@ const Navbar = () => {
               <>
                
                 <li className="nav-item">
-                  <Link className="nav-link" to="/view">View Tasks</Link>
+                  <Link className="nav-link mt-1" to="/view">View Tasks</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login" onClick={handleLogoutClick}>Logout</Link>
+                  <Link className="nav-link mt-1" to="/login" onClick={handleLogoutClick}>Logout</Link>
                 </li>
                 {userData.length > 0 && ( 
                   <li className="nav-item" style={{marginLeft:600}}>
@@ -74,10 +77,10 @@ const Navbar = () => {
                 {!isAdmin && (
                   <>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/login">Login</Link>
+                      <Link className="nav-link  mt-1" to="/login">Login <i class="fa-solid fa-right-to-bracket"></i></Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/signup">SignUp</Link>
+                      <Link className="nav-link  mt-1" to="/signup">SignUp <i class="fa-solid fa-user-plus"></i></Link>
                     </li>
                   </>
                 )}

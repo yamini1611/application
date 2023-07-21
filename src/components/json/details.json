@@ -1,7 +1,7 @@
 {
   "login": [
     {
-      "name": "Admin",
+    
       "email": "admin@gmail.com",
       "password": "admin",
       "id": 1
@@ -14,85 +14,53 @@
       "id": 2
     },
     {
-      "name": "Meenu",
-      "email": "meenu@gmail.com",
-      "password": "meenu",
+      "name": "Harita",
+      "email": "harita@gmail.com",
+      "password": "harita",
       "batch": "2021-2024",
       "id": 3
     },
     {
-      "name": "Amutha",
-      "email": "amutha@gmail.com",
-      "password": "amutha",
+      "name": "Darshan",
+      "email": "darshan@gmail.com",
+      "password": "darshan",
       "batch": "2022-2025",
       "id": 4
     },
     {
-      "name": "jawahar",
-      "email": "jawahar@gmail.com",
-      "password": "jawa",
+      "name": "Karthikeyan",
+      "email": "karthi@gmail.com",
+      "password": "karthi",
       "batch": "2020-2023",
       "id": 5
-    },
-    {
-      "name": "viku",
-      "email": "viku@gmail.com",
-      "password": "viku",
-      "batch": "2021-2024",
-      "id": 6
     }
   ],
   "tasks": [
     {
-      "TaskTopic": "React Login form ",
-      "Description": "React login Form with Validation",
-      "DueDate": "2023-07-21",
-      "Batch": "2020-2023",
-      "status": "Completed",
-      "id": 1
-    },
-    {
-      "TaskTopic": " Dot Net Programming",
-      "Description": " Dot Net Programming",
+      "TaskTopic": "React Login Form",
+      "Description": "React Login Form validation",
       "DueDate": "2023-07-22",
-      "Batch": "2021-2024",
-      "status": "Completed",
-      "completedBy": "Meenu",
-      "id": 2
+      "Batch": "2020-2023",
+      "status": "In Progress",
+      "id": 1
     }
   ],
   "viewStatus": [
     {
       "status": "Completed",
-      "completedBy": "viku",
+      "completedBy": "Yamini",
       "DueDate": "2023-07-22",
-      "Batch": "2021-2024",
-      "TaskTopic": " Dot Net Programming",
+      "Batch": "2020-2023",
+      "TaskTopic": "React Login Form",
       "id": 1
     },
     {
       "status": "Completed",
-      "completedBy": "Amutha",
-      "DueDate": "2023-07-21",
-      "Batch": "2023-2025",
-      "TaskTopic": "sdfs",
-      "id": 2
-    },
-    {
-      "status": "Completed",
-      "completedBy": "Meenu",
+      "completedBy": "jawahar",
       "DueDate": "2023-07-22",
-      "Batch": "2021-2024",
-      "TaskTopic": " Dot Net Programming",
-      "id": 3
-    },
-    {
-      "status": "Completed",
-      "completedBy": "Amutha",
-      "DueDate": "2023-07-21",
-      "Batch": "2022-2025",
-      "TaskTopic": "sdfs",
-      "id": 4
+      "Batch": "2020-2023",
+      "TaskTopic": "React Login Form",
+      "id": 2
     }
   ]
 }
