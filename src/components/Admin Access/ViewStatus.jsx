@@ -4,11 +4,10 @@ import axios from "axios";
 export default function ViewStatus() {
   const [viewStatus, setViewStatus] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [sortOption, setSortOption] = useState("nearest"); // "nearest" or "farthest"
-  const [batchFilter, setBatchFilter] = useState(""); // Batch value to filter tasks
+  const [sortOption, setSortOption] = useState("nearest");
+  const [batchFilter, setBatchFilter] = useState("");
 
   useEffect(() => {
-    // Fetch the data from the API endpoint
     axios
       .get("http://localhost:4000/viewStatus")
       .then((response) => {

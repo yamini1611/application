@@ -1,7 +1,6 @@
 {
   "login": [
     {
-    
       "email": "admin@gmail.com",
       "password": "admin",
       "id": 1
@@ -41,8 +40,24 @@
       "Description": "React Login Form validation",
       "DueDate": "2023-07-22",
       "Batch": "2020-2023",
-      "status": "In Progress",
+      "status": "Completed",
       "id": 1
+    },
+    {
+      "TaskTopic": "React web application",
+      "Description": "using material UI",
+      "DueDate": "2023-07-22",
+      "Batch": "2021-2024",
+      "status": "In Progress",
+      "id": 2
+    },
+    {
+      "TaskTopic": "dinner",
+      "Description": "dinner special",
+      "DueDate": "2023-07-25",
+      "Batch": "2022-2025",
+      "status": "Completed",
+      "id": 3
     }
   ],
   "viewStatus": [
@@ -56,10 +71,10 @@
     },
     {
       "status": "Completed",
-      "completedBy": "jawahar",
-      "DueDate": "2023-07-22",
-      "Batch": "2020-2023",
-      "TaskTopic": "React Login Form",
+      "completedBy": "Darshan",
+      "DueDate": "2023-07-25",
+      "Batch": "2022-2025",
+      "TaskTopic": "dinner",
       "id": 2
     }
   ]

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from 'react-router-dom';
 
@@ -21,7 +21,6 @@ export default function AdminTask() {
     fetchData();
     fetchLoginData();
     return () => {
-      // Clean up state when the component is unmounted
       setSelectedTaskId(null);
       setSearchQuery("");
     };
@@ -310,7 +309,7 @@ export default function AdminTask() {
         </div>
       </div>
 
-      <ToastContainer />
+    
     </div>
   );
 }

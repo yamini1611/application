@@ -28,7 +28,7 @@ const Signup = () => {
         name,
         email,
         password,
-        batch: selectedBatch, // Include the selected batch in the data
+        batch: selectedBatch, 
       };
 
       await axios.post('http://localhost:4000/login', data);

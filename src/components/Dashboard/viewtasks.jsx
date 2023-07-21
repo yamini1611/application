@@ -9,7 +9,9 @@ const Viewtasks = () => {
   const [tasks, setTasks] = useState([]);
   const [userBatch, setUserBatch] = useState('');
   const [userTasks, setUserTasks] = useState([]);
-  const [completedBy, setCompletedBy] = useState(''); // Store completedBy name
+  const [completedBy, setCompletedBy] = useState(''); 
+  const [disableInProgressBtn, setDisableInProgressBtn] = useState(false);
+  const [disableCompletedBtn, setDisableCompletedBtn] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
@@ -24,13 +26,22 @@ const Viewtasks = () => {
         setUserBatch(loggedInUser.batch);
         const userSpecificTasks = response.data.filter((task) => task.Batch === loggedInUser.batch);
         setUserTasks(userSpecificTasks);
-        setCompletedBy(loggedInUser.name); // Set the name of the logged-in user
+        setCompletedBy(loggedInUser.name); 
       }
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
   }, [user.email]);
 
+  useEffect(() => {
+    if (userTasks.some((task) => task.status === 'Completed')) {
+      setDisableInProgressBtn(true);
+      setDisableCompletedBtn(true);
+    } else {
+      setDisableInProgressBtn(false);
+      setDisableCompletedBtn(false);
+    }
+  }, [userTasks]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -42,15 +53,14 @@ const Viewtasks = () => {
     try {
       toast.success('Status updated successfully!', { autoClose: 1800, position: 'top-center' });
       
-      // Update status on the server-side
       await axios.put(`http://localhost:4000/tasks/${taskId}`, {
         ...taskToUpdate,
         status: newStatus,
       });
 
-      // Save completed tasks with user's name to /TasksCompleted endpoint
       if (newStatus === 'Completed') {
-        
+        setDisableInProgressBtn(true);
+        setDisableCompletedBtn(true);
         await axios.post('http://localhost:4000/viewStatus', {
           status: newStatus,
           completedBy,
@@ -61,7 +71,7 @@ const Viewtasks = () => {
         
       }
 
-      fetchData(); // Refetch the tasks to get the updated data
+      fetchData(); 
     } catch (error) {
       console.error('Error updating task status: ', error);
     }
@@ -96,15 +106,22 @@ const Viewtasks = () => {
                       <td>{task.Batch}</td>
 
                       <td>
-                        <Button
-                          onClick={() => handleStatusChange(task.id, 'In Progress')}
-                          style={{ marginRight: 10, backgroundColor: 'yellow', color: 'black' }}
-                        >
-                          In Progress
-                        </Button>
+                      {task.status !== 'In Progress' && !disableInProgressBtn && (
+                          <Button
+                            onClick={() => handleStatusChange(task.id, 'In Progress')}
+                            style={{
+                              marginRight: 10,
+                              backgroundColor: 'yellow',
+                              color: 'black',
+                            }}
+                          >
+                            In Progress
+                          </Button>
+                        )}
                         <Button
                           style={{ backgroundColor: 'green', color: 'white' }}
                           onClick={() => handleStatusChange(task.id, 'Completed')}
+                          disabled={task.status === 'Completed' || disableCompletedBtn}
                         >
                           Completed
                         </Button>

@@ -11,7 +11,6 @@ const Navbar = () => {
     return <Navigate to="/login" />;
   };
   useEffect(() => {
-    // Fetch data from the API
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:4000/login');

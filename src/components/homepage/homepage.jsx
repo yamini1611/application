@@ -1,5 +1,6 @@
 import React from "react";
 import '../homepage/homepage.css'
+import { Link } from "react-router-dom";
 const ProtectedPage = ({ name }) => {
 
   return (
@@ -13,7 +14,12 @@ const ProtectedPage = ({ name }) => {
     <span className="gfe-button__label">Compare editions</span>
   </a></li><li className="gfe-rows__item  gfe-mod-valign-middle gfe-mod-spacer-2-top gfe-mod-spacer-2-top-sm-only"><a className="gfe-button gfe-button--medium-emphasis gfe-button--middle-align" href="https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fclassroom.google.com&amp;passive=true" target="_blank" rel="noopener noreferrer" data-g-type="outbound" data-g-action="page intro cta click" data-g-category="component" data-g-label="Where teaching and learning come together - Sign in to Classroom - https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fclassroom.google.com&amp;passive=true" data-ga4="{&quot;click&quot;: {&quot;event&quot;: &quot;cta_click&quot;, &quot;link_text&quot;: &quot;Sign in to Classroom&quot;, &quot;link_type&quot;: &quot;external&quot;, &quot;link_url&quot;: &quot;https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fclassroom.google.com&amp;passive=true&quot;, &quot;module_name&quot;: &quot;&quot;, &quot;position&quot;: 2, &quot;section_header&quot;: &quot;&quot;}}" tabIndex="0">
     <span className="gfe-button__label">Sign in to Classroom</span>
-  </a></li></ul>
+  </a></li><br></br>
+  <li>
+    <Link to="/View"><span className="gfe-button__label">Go to Class</span></Link>
+  </li>
+  </ul>
+  
 </div>
 <div className="col"  id="col"> 
 <img src="https://lh3.googleusercontent.com/KyRRnjxu7sK27P4WYHUckt-8ilJrLZQSZ_F_r_nA_rnGhsCvTuCvGC_xVMkNWVQCPzx1e5BybYm3ZvC-REz8bJmQDZW0zTPdAU2b2juv-E9AgUtBUCQ=w1296-v0-e30" alt="" id='img' height={550} width={650}></img>

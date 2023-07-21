@@ -8,7 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { user, handleLogin } = useContext(UserContext);
-  const [viewTasksVisible, setViewTasksVisible] = useState(false); // State to control visibility
+  const [viewTasksVisible, setViewTasksVisible] = useState(false); 
   const [batch, setBatch] = useState(''); 
   const handleSubmit = (e) => {
     e.preventDefault();
